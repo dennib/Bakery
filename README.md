@@ -24,7 +24,7 @@ It comes with a starting, basic, layout `main.hbs` (`views/layouts` folder) then
 
 If you want to separate **`reusable parts of your code in their own component file`** you can to that by simply creating the respective `.hbs file` in `views/partials` folder and then use it in any of your handlebars templates through handlebars syntax.
 
-####**Step by Step Guide**
+#### Step by Step Guide
 **1.** Declare your page template in the `plugins section` of `webpac.config.js` like so:
 ```
 plugins: [
