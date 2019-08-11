@@ -2,8 +2,20 @@ const path = require('path');
 var glob = require('glob');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+
+const htmlMinifyOptions = {
+  collapseWhitespace: true,
+  collapseInlineTagWhitespace: false,
+  conservativeCollapse: false,
+  preserveLineBreaks: true,
+  removeAttributeQuotes: false,
+  removeComments: false,
+  useShortDoctype: false,
+  html5: true,
+};
 
 module.exports = {
   context: path.resolve(__dirname),
@@ -16,6 +28,9 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'js/[name].js'
   },
+  optimization: {
+    minimizer: [new OptimizeCSSAssetsPlugin({})],
+  },
   module: {
     rules: [
       {
@@ -23,9 +38,7 @@ module.exports = {
         use: [
           {
             loader: 'html-loader',
-            options: {
-              minimize: true
-            }
+            options: {}
           }
         ]
       },
@@ -90,13 +103,15 @@ module.exports = {
       title: `Home | Bakery`,
       template: './src/views/templates/home/home.hbs',
       filename: './index.html',
-      chunks: ['main', 'home']
+      chunks: ['main', 'home'],
+      minify: htmlMinifyOptions
     }),
     new HtmlWebPackPlugin({
       title: `About | Bakery`,
       template: './src/views/templates/about/about.hbs',
       filename: './about/index.html',
-      chunks: ['main', 'about']
+      chunks: ['main', 'about'],
+      minify: htmlMinifyOptions
     }),
     new CopyPlugin([{ from: './src/static' }])
   ],
