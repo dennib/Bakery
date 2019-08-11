@@ -1,3 +1,5 @@
+![Bakery Logo](https://i.imgur.com/ElIPCyF.jpg)
+
 # Bakery
 
 *FrontEnd Boilerplate - A simple and lightweight FrontEnd Starter kit based on Webpack and Handlebars supporting ES6 and SCSS*.
