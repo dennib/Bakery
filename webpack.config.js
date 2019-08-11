@@ -8,7 +8,9 @@ const CopyPlugin = require('copy-webpack-plugin');
 module.exports = {
   context: path.resolve(__dirname),
   entry: {
-    main: './src/js/global.js'
+    main: './src/js/global.js',
+    home: './src/views/templates/home/home.js',
+    about: './src/views/templates/about/about.js'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -76,7 +78,7 @@ module.exports = {
           'sass-loader'
         ]
       }
-    ]
+    ],
   },
   plugins: [
     new CleanWebpackPlugin(),
@@ -86,15 +88,15 @@ module.exports = {
     }),
     new HtmlWebPackPlugin({
       title: `Home | Bakery`,
-      template: './src/views/templates/home.hbs',
+      template: './src/views/templates/home/home.hbs',
       filename: './index.html',
-      chunks: ['main']
+      chunks: ['main', 'home']
     }),
     new HtmlWebPackPlugin({
       title: `About | Bakery`,
-      template: './src/views/templates/about.hbs',
+      template: './src/views/templates/about/about.hbs',
       filename: './about/index.html',
-      chunks: ['main']
+      chunks: ['main', 'about']
     }),
     new CopyPlugin([{ from: './src/static' }])
   ],
