@@ -1,6 +1,17 @@
 # Bakery
 
-*FrontEnd Boilerplate - A Webpack based FrontEnd Starter kit supporting ES6, SCSS and Handlebars*
+*FrontEnd Boilerplate - A simple and lightweight FrontEnd Starter kit based on Webpack and Handlebars supporting ES6 and SCSS*.
+
+## Features
+Bakery takes advantage of ***Webpack*** to build html pages starting from ***Handlebars*** templates with support for ***SASS/SCSS***, ***ES6*** transpiling and JS chunks injection. 
+
+**HIGHLIGHTS**
+- **Handlebars** (with layouts and partials)
+- **SASS/SCSS/CSS** support (with scoped styles)
+- **Images/File** loader
+- **ES6** to ES5 transpiling with Babel
+- **HTML and CSS** minification
+- **JS chunks** injected per page
 
 
 ### Installation
@@ -16,29 +27,37 @@ cd Bakery && npm install
   
   
 ### Usage
-Bakery takes advantage of ***Webpack*** to build html pages starting from ***Handlebars*** templates with support for ***SASS/SCSS*** and ***ES6*** transpiling and JS chunks injection.
+
 
 It comes with a starting, basic, layout `main.hbs` (`views/layouts` folder) then used, through handlebars logic, by the various page templates you add. Two example templates comes by default in `views/templates` which then use the main layout. You can add as many layouts and templates as you want.
 
-**NOTE:** Every page/template you add has to be declared in your webpack config file: `webpac.config.js`.
+**NOTE:** Every page/template you add has to be declared in your webpack config file: `webpack.config.js`.
 
 If you want to separate **`reusable parts of your code in their own component file`** you can to that by simply creating the respective `.hbs file` in `views/partials` folder and then use it in any of your handlebars templates through handlebars syntax.
 
 #### Step by Step Guide
-**1.** Declare your page template in the `plugins section` of `webpac.config.js` like so:
+**1.** Declare your `.js` entry points, one for every page, in `webpack.config.js` like so:
+```
+  entry: {
+    main: './src/js/global.js',
+    home: './src/views/templates/home/home.js',
+    about: './src/views/templates/about/about.js'
+  },
+```
+**2.** Declare your page template in the `plugins section` of `webpack.config.js` like so:
 ```
 plugins: [
     ...
     new HtmlWebPackPlugin({
       title: `Home | Bakery`,
-      template: './src/views/templates/home.hbs',
+      template: './src/views/templates/home/home.hbs',
       filename: './index.html',
       chunks: ['main']
     }),
 
     new HtmlWebPackPlugin({
       title: `About | Bakery`,
-      template: './src/views/templates/about.hbs',
+      template: './src/views/templates/about/about.hbs',
       filename: './about/index.html',
       chunks: ['main']
     }),
@@ -48,22 +67,29 @@ plugins: [
 **`title`**: The title of the HTML page you  want to insert (see in the browser;
 **`template`**: The path to the handlebars template to compile for current page;
 **`filename`**: The filename of the compiled html page;
-**`chunks`**: You can inject specific js chunks with the *`chunks`* property, an array of chuncks name (where a `chunk name is the name of the js file` you want to inject, note that you ***must*** specify an `entry point` for each separate chunk file you want).
+**`chunks`**: You can inject specific js chunks with the *`chunks`* property, an array of chuncks name (where a `chunk name is the name of the js file` you want to inject.
 
-**2.** Create your handlebars page template in `views/templates` using the desired layout:
+**3.** Create your handlebars page template `folder` insert relative `.hbs`, `.js` and `.scss` files in `views/templates/` using the desired layout.
+e.g. for catalogue page, create **`views/templates/catalogue/`** and inside of it the files `catalogue.hbs`,`catalogue.js` and `catalogue.scss`.
+
+**catalogue.hbs**
 ```
 {{#> main }}
 
-    <h1>Example Page</h1>
-    <p>I'm the content of a dummy page</p>
+    <h1>Catalogue Page</h1>
+    <p>I'm the content of catalogue page</p>
 
 {{/main}}
 ```
 
+**catalogue.js**
+```
+import './catalogue.scss'
+```
 
-**3.** Insert desired styles in `scss/main.scss` (a global stylesheet, scoped stylsheets coming soon).
+**4.** Insert global styles in `scss/main.scss` and scoped styles in the specific `.scss file`.
 
-**4.** Run one of the following commands.
+**5.** Run one of the following commands.
 
 
 #### Commands
