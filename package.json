@@ -1,0 +1,33 @@
+{
+  "name": "bakery",
+  "version": "1.0.0",
+  "description": "Frontend Boilerplate - A Webpack based FrontEnd Starter kit supporting ES6, SCSS and Handlebars",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack-dev-server",
+    "dev:open": "webpack-dev-server --open",
+    "build": "webpack"
+  },
+  "author": "Denni Bevilacqua",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "babel-loader": "^8.0.6",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^5.0.4",
+    "css-loader": "^3.2.0",
+    "file-loader": "^4.2.0",
+    "handlebars": "^4.1.2",
+    "handlebars-loader": "^1.7.1",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.8.0",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^7.2.0",
+    "style-loader": "^1.0.0",
+    "webpack": "^4.39.1",
+    "webpack-cli": "^3.3.6",
+    "webpack-dev-server": "^3.8.0"
+  }
+}
