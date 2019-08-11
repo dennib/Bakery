@@ -16,12 +16,12 @@ Bakery takes advantage of ***Webpack*** to build html pages starting from ***Han
 
 ### Installation
 1. Clone the repo
-```
+```bash
 git clone https://github.com/dennib/Bakery.git
 ```
 
 2. Install npm packages
-```
+```bash
 cd Bakery && npm install
 ```
   
@@ -36,30 +36,37 @@ It comes with a starting, basic, layout `main.hbs` (`views/layouts` folder) then
 If you want to separate **`reusable parts of your code in their own component file`** you can to that by simply creating the respective `.hbs file` in `views/partials` folder and then use it in any of your handlebars templates through handlebars syntax.
 
 #### Step by Step Guide
-**1.** Declare your `.js` entry points, one for every page, in `webpack.config.js` like so:
-```
+##### 1. Declare your `.js` entry points
+One for every page, in `webpack.config.js` like so, e.g. for a new page named `catalogue`:
+```javascript
   entry: {
     main: './src/js/global.js',
     home: './src/views/templates/home/home.js',
-    about: './src/views/templates/about/about.js'
+    about: './src/views/templates/about/about.js',
+    catalogue: './src/views/templates/catalogue/catalogue.js'
   },
 ```
-**2.** Declare your page template in the `plugins section` of `webpack.config.js` like so:
-```
+##### 2. Declare your page template
+One declaration for every page, in the `plugins section` of `webpack.config.js` like so:
+```javascript
 plugins: [
     ...
     new HtmlWebPackPlugin({
       title: `Home | Bakery`,
       template: './src/views/templates/home/home.hbs',
       filename: './index.html',
-      chunks: ['main']
+      chunks: ['main'],
+      minify: htmlMinifyOptions
     }),
+
+    ...
 
     new HtmlWebPackPlugin({
       title: `About | Bakery`,
-      template: './src/views/templates/about/about.hbs',
-      filename: './about/index.html',
-      chunks: ['main']
+      template: './src/views/templates/catalogue/catalogue.hbs',
+      filename: './catalgoue/index.html',
+      chunks: ['main', 'catalogue'],
+      minify: htmlMinifyOptions
     }),
     ...
   ],
@@ -68,12 +75,28 @@ plugins: [
 **`template`**: The path to the handlebars template to compile for current page;
 **`filename`**: The filename of the compiled html page;
 **`chunks`**: You can inject specific js chunks with the *`chunks`* property, an array of chuncks name (where a `chunk name is the name of the js file` you want to inject.
+**`minify`**: A configuration object containing minimizing options (you can change the config per page or use the global ones), here's the default config included in Bakery:
+```javascript
+const htmlMinifyOptions = {
+  collapseWhitespace: true,
+  collapseInlineTagWhitespace: false,
+  conservativeCollapse: false,
+  preserveLineBreaks: true,
+  removeAttributeQuotes: false,
+  removeComments: false,
+  useShortDoctype: false,
+  html5: true,
+};
+```
+**Note:** you can find all available options at [HTML Minifier documentation page](https://github.com/kangax/html-minifier#options-quick-reference).
+  
 
-**3.** Create your handlebars page template `folder` insert relative `.hbs`, `.js` and `.scss` files in `views/templates/` using the desired layout.
+##### 3. Create your handlebars page template `folder`
+Insert relative `.hbs`, `.js` and `.scss` files in `views/templates/` using the desired layout.
 e.g. for catalogue page, create **`views/templates/catalogue/`** and inside of it the files `catalogue.hbs`,`catalogue.js` and `catalogue.scss`.
 
 **catalogue.hbs**
-```
+```handlebars
 {{#> main }}
 
     <h1>Catalogue Page</h1>
@@ -83,13 +106,13 @@ e.g. for catalogue page, create **`views/templates/catalogue/`** and inside of i
 ```
 
 **catalogue.js**
-```
+```javascript
 import './catalogue.scss'
 ```
 
-**4.** Insert global styles in `scss/main.scss` and scoped styles in the specific `.scss file`.
+##### 4. Insert global styles in `scss/main.scss` and scoped styles in every specific `.scss file`.
 
-**5.** Run one of the following commands.
+##### 5. Run one of the following commands.
 
 
 #### Commands
