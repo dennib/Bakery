@@ -1,4 +1,5 @@
 const path = require('path');
+var glob = require('glob');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -36,7 +37,12 @@ module.exports = {
             path.join(__dirname, 'src', 'views', 'layouts'),
             path.join(__dirname, 'src', 'views', 'templates'),
             path.join(__dirname, 'src', 'views', 'partials')
-          ]
+          ].concat(
+            glob.sync('**/', {
+              cwd: path.resolve(__dirname, 'src', 'views', 'partials'),
+              realpath: true
+            })
+          )
         }
       },
       {
