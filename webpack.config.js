@@ -6,23 +6,13 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 
-const htmlMinifyOptions = {
-  collapseWhitespace: true,
-  collapseInlineTagWhitespace: false,
-  conservativeCollapse: false,
-  preserveLineBreaks: true,
-  removeAttributeQuotes: false,
-  removeComments: false,
-  useShortDoctype: false,
-  html5: true,
-};
+const config = require('./config');
 
-module.exports = {
+const webpackConfig = {
   context: path.resolve(__dirname),
   entry: {
     main: './src/js/global.js',
     home: './src/views/templates/home/home.js',
-    about: './src/views/templates/about/about.js'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -104,14 +94,7 @@ module.exports = {
       template: './src/views/templates/home/home.hbs',
       filename: './index.html',
       chunks: ['main', 'home'],
-      minify: htmlMinifyOptions
-    }),
-    new HtmlWebPackPlugin({
-      title: `About | Bakery`,
-      template: './src/views/templates/about/about.hbs',
-      filename: './about/index.html',
-      chunks: ['main', 'about'],
-      minify: htmlMinifyOptions
+      minify: config.htmlMinifyOptions
     }),
     new CopyPlugin([{ from: './src/static' }])
   ],
@@ -119,3 +102,17 @@ module.exports = {
     contentBase: path.join(__dirname, 'dist')
   }
 };
+
+config.pages.map(page => {
+  const htmlPageInit = new HtmlWebPackPlugin({
+    title: `${page} | Bakery`,
+      template: `./src/views/templates/${page}/${page}.hbs`,
+      filename: `./${page}/index.html`,
+      chunks: ['main', page],
+      minify: config.htmlMinifyOptions
+  })
+  webpackConfig.entry[page] = `./src/views/templates/${page}/${page}.js`;
+  webpackConfig.plugins.push(htmlPageInit);
+})
+
+module.exports = webpackConfig;
