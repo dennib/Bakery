@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { normalizeText } = require('./utils/normalize');
 
 // Check if the user has correctly specified a name
 // for the new page template he wants
@@ -39,7 +40,7 @@ fs.writeFile(
   `
     {{#> main }}
 
-        <h1>${requestedPage}</h1>
+        <h1>${normalizeText(requestedPage)}</h1>
 
     {{/main}}
 `,

@@ -7,19 +7,20 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 
 const config = require('./config');
+const { normalizeText } = require('./utils/normalize');
 
 const webpackConfig = {
   context: path.resolve(__dirname),
   entry: {
     main: './src/js/global.js',
-    home: './src/views/templates/home/home.js',
+    home: './src/views/templates/home/home.js'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'js/[name].js'
   },
   optimization: {
-    minimizer: [new OptimizeCSSAssetsPlugin({})],
+    minimizer: [new OptimizeCSSAssetsPlugin({})]
   },
   module: {
     rules: [
@@ -81,7 +82,7 @@ const webpackConfig = {
           'sass-loader'
         ]
       }
-    ],
+    ]
   },
   plugins: [
     new CleanWebpackPlugin(),
@@ -105,14 +106,14 @@ const webpackConfig = {
 
 config.pages.map(page => {
   const htmlPageInit = new HtmlWebPackPlugin({
-    title: `${page} | Bakery`,
-      template: `./src/views/templates/${page}/${page}.hbs`,
-      filename: `./${page}/index.html`,
-      chunks: ['main', page],
-      minify: config.htmlMinifyOptions
-  })
+    title: `${normalizeText(page)} | Bakery`,
+    template: `./src/views/templates/${page}/${page}.hbs`,
+    filename: `./${page}/index.html`,
+    chunks: ['main', page],
+    minify: config.htmlMinifyOptions
+  });
   webpackConfig.entry[page] = `./src/views/templates/${page}/${page}.js`;
   webpackConfig.plugins.push(htmlPageInit);
-})
+});
 
 module.exports = webpackConfig;
