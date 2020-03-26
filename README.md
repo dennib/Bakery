@@ -62,27 +62,13 @@ This will create the directory `src/views/templates/name-of-the-page` with 3 fil
 
 - **`name-of-the-page.hbs `**: the template itself, by default injected in `main.hbs` layout. You can add HTML or Handlebars code as well as use `.hbs partials`.
 
-#### 2. Declare your page template to webpack
-In order for your page template to be visible (thus usable for dev-server or production) you need to add its name to the `config.pages` array in `config.js`:
-
-```javascript
-const config = {}
-
-// Declare your pages here (other than home)
-config.pages = ['about', 'name-of-the-page'];
-
-
-// ... continues with other configs
-
-```
-
-#### 3. Start working on your newly created page
+#### 2. Start working on your newly created page
 - Insert `HTML/Handlebars` code in your `name-of-the.page.hbs` file
 - Insert `css/scss code` specific to this page in `name-of-the.page.scss`
 - Insert global `css/scss` code in `src/scss/main.scss`
 - Create and/or import handlebars `partials` from `srd/views/partials`
 
-#### 4. Start the Dev Server or build for production
+#### 3. Start the Dev Server or build for production
 (see commands below)
 
 
