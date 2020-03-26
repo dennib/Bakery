@@ -1,10 +1,10 @@
 {
   "name": "bakery",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Frontend Boilerplate - A Webpack based FrontEnd Starter kit supporting ES6, SCSS and Handlebars",
   "main": "index.js",
   "scripts": {
-    "create":"node presets.js",
+    "create": "node presets.js",
     "dev": "webpack-dev-server",
     "dev:open": "webpack-dev-server --open",
     "build": "webpack"
