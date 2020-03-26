@@ -1,35 +1,27 @@
+const fs = require('fs');
 const path = require('path');
-var glob = require('glob');
+const glob = require('glob');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 
-const htmlMinifyOptions = {
-  collapseWhitespace: true,
-  collapseInlineTagWhitespace: false,
-  conservativeCollapse: false,
-  preserveLineBreaks: true,
-  removeAttributeQuotes: false,
-  removeComments: false,
-  useShortDoctype: false,
-  html5: true,
-};
+const config = require('./config');
+const { normalizeText } = require('./utils/normalize');
 
-module.exports = {
+const webpackConfig = {
   context: path.resolve(__dirname),
   entry: {
     main: './src/js/global.js',
-    home: './src/views/templates/home/home.js',
-    about: './src/views/templates/about/about.js'
+    home: './src/views/templates/home/home.js'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'js/[name].js'
   },
   optimization: {
-    minimizer: [new OptimizeCSSAssetsPlugin({})],
+    minimizer: [new OptimizeCSSAssetsPlugin({})]
   },
   module: {
     rules: [
@@ -91,7 +83,7 @@ module.exports = {
           'sass-loader'
         ]
       }
-    ],
+    ]
   },
   plugins: [
     new CleanWebpackPlugin(),
@@ -99,23 +91,27 @@ module.exports = {
       filename: 'css/[name].css',
       chunkFilename: '[id].css'
     }),
-    new HtmlWebPackPlugin({
-      title: `Home | Bakery`,
-      template: './src/views/templates/home/home.hbs',
-      filename: './index.html',
-      chunks: ['main', 'home'],
-      minify: htmlMinifyOptions
-    }),
-    new HtmlWebPackPlugin({
-      title: `About | Bakery`,
-      template: './src/views/templates/about/about.hbs',
-      filename: './about/index.html',
-      chunks: ['main', 'about'],
-      minify: htmlMinifyOptions
-    }),
     new CopyPlugin([{ from: './src/static' }])
   ],
   devServer: {
     contentBase: path.join(__dirname, 'dist')
   }
 };
+
+fs.readdirSync(path.join(__dirname, 'src', 'views', 'templates')).forEach(page => {
+    console.log(`Building page: ${page.toUpperCase()}`);
+
+    const htmlPageInit = new HtmlWebPackPlugin({
+      title: `${normalizeText(page)} | Bakery`,
+      template: `./src/views/templates/${page}/${page}.hbs`,
+      filename: `./${page != "home" ? page + "/" : ""}index.html`,
+      chunks: ['main', page],
+      minify: config.htmlMinifyOptions
+    });
+
+    webpackConfig.entry[page] = `./src/views/templates/${page}/${page}.js`;
+    webpackConfig.plugins.push(htmlPageInit);
+
+});
+
+module.exports = webpackConfig;

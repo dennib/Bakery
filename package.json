@@ -4,6 +4,7 @@
   "description": "Frontend Boilerplate - A Webpack based FrontEnd Starter kit supporting ES6, SCSS and Handlebars",
   "main": "index.js",
   "scripts": {
+    "create":"node presets.js",
     "dev": "webpack-dev-server",
     "dev:open": "webpack-dev-server --open",
     "build": "webpack"
