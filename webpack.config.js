@@ -1,5 +1,6 @@
+const fs = require('fs');
 const path = require('path');
-var glob = require('glob');
+const glob = require('glob');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
@@ -90,13 +91,6 @@ const webpackConfig = {
       filename: 'css/[name].css',
       chunkFilename: '[id].css'
     }),
-    new HtmlWebPackPlugin({
-      title: `Home | Bakery`,
-      template: './src/views/templates/home/home.hbs',
-      filename: './index.html',
-      chunks: ['main', 'home'],
-      minify: config.htmlMinifyOptions
-    }),
     new CopyPlugin([{ from: './src/static' }])
   ],
   devServer: {
@@ -104,16 +98,20 @@ const webpackConfig = {
   }
 };
 
-config.pages.map(page => {
-  const htmlPageInit = new HtmlWebPackPlugin({
-    title: `${normalizeText(page)} | Bakery`,
-    template: `./src/views/templates/${page}/${page}.hbs`,
-    filename: `./${page}/index.html`,
-    chunks: ['main', page],
-    minify: config.htmlMinifyOptions
-  });
-  webpackConfig.entry[page] = `./src/views/templates/${page}/${page}.js`;
-  webpackConfig.plugins.push(htmlPageInit);
+fs.readdirSync(path.join(__dirname, 'src', 'views', 'templates')).forEach(page => {
+    console.log(`Building page: ${page.toUpperCase()}`);
+
+    const htmlPageInit = new HtmlWebPackPlugin({
+      title: `${normalizeText(page)} | Bakery`,
+      template: `./src/views/templates/${page}/${page}.hbs`,
+      filename: `./${page != "home" ? page + "/" : ""}index.html`,
+      chunks: ['main', page],
+      minify: config.htmlMinifyOptions
+    });
+
+    webpackConfig.entry[page] = `./src/views/templates/${page}/${page}.js`;
+    webpackConfig.plugins.push(htmlPageInit);
+
 });
 
 module.exports = webpackConfig;

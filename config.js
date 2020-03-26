@@ -1,8 +1,5 @@
 const config = {}
 
-// Declare your pages here (other than home)
-config.pages = ['about'];
-
 // HTML Minimizer options
 // Set the values you want or add other settings
 // among the ones available from 
