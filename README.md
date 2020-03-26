@@ -21,7 +21,7 @@ Bakery takes advantage of ***Webpack*** to build html pages (static websites) fr
     - [Description](#description)
     - [Guide](#guide)
     - [Commands](#commands)
-    - [Additional Config](#additional-config)
+    - [Configuration](#configuration)
         - [HTML Minification options](#html-minification-options)
 - [References](#notes)
 ---
@@ -83,14 +83,11 @@ Change `name-of-the-page` with the your new page desired name.
 - **`npm run dev:open`**: Same as `npm run dev` but with browser opened automatically.
 
 
-#### Additional Config
+#### Configuration
 ##### HTML Minification options
 
-In `config.js` you can also find a `config.htmlMinifyOptions` configuation object with the default HTML minification config included in Bakery:
+In `config.js` you can find a `config.htmlMinifyOptions` configuation object with the default HTML minification config included in Bakery:
 ```javascript
-
-// ... other configs up here
-
 // HTML Minimizer options
 // Set the values you want or add other settings
 // among the ones available from 
